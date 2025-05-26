@@ -1,0 +1,6 @@
+@RaviLMS_HostAddress = http://localhost:5186
+
+GET {{RaviLMS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
