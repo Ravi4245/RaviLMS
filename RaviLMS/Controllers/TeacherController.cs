@@ -52,7 +52,7 @@ namespace RaviLMS.Controllers
                 //    }
                 //}
                 // Compose email
-                string subject = "🎉 Registration Received – Awaiting Approval";
+                string subjects = "🎉 Registration Received – Awaiting Approval";
 
                 string body = $@"
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
