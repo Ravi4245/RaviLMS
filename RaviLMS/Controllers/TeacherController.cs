@@ -95,8 +95,7 @@ namespace RaviLMS.Controllers
         [HttpGet("approved")]
         public IActionResult GetApprovedTeachers()
         {
-            var teachers = _teacherRepository.GetApprovedTeachers();
-            return Ok(teachers);
+            
 
 
             //string connectionString = _configuration.GetConnectionString("LMSDB");
