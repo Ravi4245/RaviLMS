@@ -38,7 +38,7 @@ namespace RaviLMS.Controllers
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Student (FullName, Email, Password, Status) VALUES (@FullName, @Email, @Password, 'Pending')";
+                    string queryy = "INSERT INTO Student (FullName, Email, Password, Status) VALUES (@FullName, @Email, @Password, 'Pending')";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
