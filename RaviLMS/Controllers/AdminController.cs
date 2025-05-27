@@ -88,9 +88,9 @@ namespace RaviLMS.Controllers
                 {
                     cmd.Parameters.AddWithValue("@StudentId", studentId);
                     con.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                    int rowsAffecteds = cmd.ExecuteNonQuery();
 
-                    if (rowsAffected == 1)
+                    if (rowsAffecteds == 1)
                     {
                         return Ok(new { message = "Student approved successfully" });
                     }
