@@ -71,7 +71,7 @@ namespace RaviLMS.Controllers
                 }
             }
 
-            return Ok(course);
+            return Ok(courses);
         }
     }
 }
