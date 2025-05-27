@@ -11,7 +11,7 @@ namespace RaviLMS.Models
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [EmailAddress(ErrorMessages = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
