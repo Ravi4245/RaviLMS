@@ -85,7 +85,7 @@ namespace RaviLMS.Controllers
                 }
             }
 
-            return Ok(assignments);
+           
         }
 
 
