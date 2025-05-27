@@ -32,7 +32,7 @@ namespace RaviLMS.Controllers
                 {
                     cmd.Parameters.AddWithValue("@CourseName", course.CourseName);
                     cmd.Parameters.AddWithValue("@Description", course.Description);
-                    cmd.Parameters.AddWithValue("@TeacherId", course.TeacherId);
+                  cmd.Parameters.AddWithValue("@TeacherId", course.TeacherId);
 
                     con.Open();
                     cmd.ExecuteNonQuery();
@@ -71,7 +71,7 @@ namespace RaviLMS.Controllers
                 }
             }
 
-            return Ok(courses);
+            return Ok(course);
         }
     }
 }
