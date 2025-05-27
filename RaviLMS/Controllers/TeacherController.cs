@@ -85,7 +85,7 @@ namespace RaviLMS.Controllers
             {
                 return StatusCode(500, new
                 {
-                    message = "An error occurred",
+                    message = " Error occurred",
                     error = ex.Message,
                     stackTrace = ex.StackTrace // ➕ helps you identify the error line
                 });
