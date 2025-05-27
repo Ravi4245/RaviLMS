@@ -64,7 +64,7 @@ namespace RaviLMS.Controllers
                         courses.Add(new Course
                         {
                             CourseId = Convert.ToInt32(reader["CourseId"]),
-                            CourseName = reader["CourseName"].ToString(),
+                          //  CourseName = reader["CourseName"].ToString(),
                             TeacherId = Convert.ToInt32(reader["TeacherId"])
                         });
                     }
