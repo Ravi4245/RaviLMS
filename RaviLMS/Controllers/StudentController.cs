@@ -52,11 +52,29 @@ namespace RaviLMS.Controllers
 
                 }
                 // Compose email
-                string subject = "Registration Successful - Awaiting Approval";
-                string body = $"<p>Dear {student.FullName},</p>" +
-                              "<p>Thank you for registering in our Learning Managment system. Your account is currently awaiting admin approval.</p>" +
-                              "<p>You can access your account after 2 min.</p>" +
-                              "<br/><p>Regards,<br/>LMS Team</p>";
+               string subject = "✅ Registration Successful – Awaiting Approval";
+
+               string body = $@"
+               <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Dear <strong>{student.FullName}</strong>, 👋
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Thank you for registering with our <strong>Learning Management System (LMS)</strong>. 🎓<br/>
+                        Your account has been successfully created and is currently <strong>awaiting admin approval</strong>. 🔐
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        ⏳ Please allow a few minutes (approx. 2 minutes) for the system to process your access.<br/>
+                        You’ll be able to log in once your registration is approved.
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        If you have any questions, feel free to reply to this email.
+                    </p>
+                    <br/>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Best regards,<br/>
+                        <strong>RHS Team</strong> 💼
+               </p>";
+
 
                 // Send email (async)
                 await _emailService.SendEmailAsync(student.Email, subject, body);
