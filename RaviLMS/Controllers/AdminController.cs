@@ -69,7 +69,7 @@ namespace RaviLMS.Controllers
                     }
                     else
                     {
-                        return Unauthorized(new { success = false, message = "Invalid credentials" });
+                        return Unauthorized(new { success = false, message = "Invalid user credentials" });
                     }
                 }
             }
@@ -96,7 +96,7 @@ namespace RaviLMS.Controllers
                     }
                     else
                     {
-                        return NotFound(new { message = "Student not found" });
+                        return NotFound(new { message = "Student doest not exists" });
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace RaviLMS.Controllers
                     }
                     else
                     {
-                        return NotFound(new { message = "Teacher not found" });
+                        return NotFound(new { message = "Teacher not found " });
                     }
                 }
             }
