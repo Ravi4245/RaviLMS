@@ -6,7 +6,7 @@ namespace RaviLMS.Models
     {
         public int StudentId { get; set; }
 
-        [Required(ErrorMessage = "Full Name is required")]
+        [Required(ErrorMessages = "Full Name is required")]
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters")]
         public string FullName { get; set; }
 
