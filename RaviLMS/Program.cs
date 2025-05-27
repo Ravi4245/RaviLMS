@@ -94,7 +94,7 @@ namespace RaviLMS
 
             app.MapControllers();
 
-            app.Run();
+           
         }
     }
 }
