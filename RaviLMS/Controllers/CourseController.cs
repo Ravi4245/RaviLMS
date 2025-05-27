@@ -55,7 +55,7 @@ namespace RaviLMS.Controllers
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                  //  cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                   cmd.Parameters.AddWithValue("@TeacherId", teacherId);
                     con.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
