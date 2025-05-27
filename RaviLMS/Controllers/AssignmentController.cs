@@ -15,7 +15,7 @@ namespace RaviLMS.Controllers
 
         public AssignmentController(IConfiguration configuration)
         {
-            _configuration = configuratio;
+            _configuration = configuration;
         }
 
         // ✅ Add a new assignment
