@@ -52,12 +52,29 @@ namespace RaviLMS.Controllers
                 //    }
                 //}
                 // Compose email
-                string subject = "Registration Successful - Awaiting Approval";
-                string body = $"<p>Dear {teacher.FullName},</p>" +
-                              "<p>Thank you for registering in our Learning managment system. Your account is currently awaiting admin approval.</p>" +
-                              "<p>You can access your account after 2 min.</p>" +
-                              "<p> </p>" +
-                              "<br/><p>Regards,<br/>LMS Team</p>";
+                string subject = "🎉 Registration Received – Awaiting Approval";
+
+                string body = $@"
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Dear <strong>{teacher.FullName}</strong>, 👋
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        We're excited to welcome you to our <strong>Learning Management System (LMS)</strong> community. 📚<br/>
+                        Thank you for registering as a teacher – we truly value your expertise and commitment to education. 🙌
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Your account has been successfully created and is currently <strong>awaiting admin approval</strong>. 🔐<br/>
+                        You’ll be able to access your dashboard in approximately 2 minutes.
+                    </p>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        If you have any questions, feel free to reach out anytime.
+                    </p>
+                    <br/>
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                        Best regards,<br/>
+                        <strong>RHS Team</strong> 🎓
+                    </p>";
+
 
                 // Send email (async)
                 await _emailService.SendEmailAsync(teacher.Email, subject, body);
