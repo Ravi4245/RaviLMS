@@ -35,7 +35,7 @@ namespace RaviLMS.Controllers
             string connectionString = _configuration.GetConnectionString("LMSDB");
             try
             {
-                await _teacherRepository.RegisterTeacherAsync(teacher);
+                await _teacherRepository.RegisterTeacherAsync(teachers);
 
                 //using (SqlConnection con = new SqlConnection(connectionString))
                 //{
