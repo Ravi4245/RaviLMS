@@ -39,7 +39,7 @@ namespace RaviLMS.Controllers
                 }
             }
 
-            return Ok(new { message = "Course created successfully" });
+            return Ok(new { message = "Course Successfully Created" });
         }
 
         // Get courses by teacher id
