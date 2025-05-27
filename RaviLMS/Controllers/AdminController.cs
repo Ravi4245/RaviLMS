@@ -96,7 +96,7 @@ namespace RaviLMS.Controllers
                     }
                     else
                     {
-                        return NotFound(new { message = "Student doest not exists" });
+                        return NotFound(new { message = "Student not found" });
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace RaviLMS.Controllers
                     }
                     else
                     {
-                        return NotFound(new { message = "Teacher not found " });
+                        return NotFound(new { message = "Teacher does not found " });
                     }
                 }
             }
