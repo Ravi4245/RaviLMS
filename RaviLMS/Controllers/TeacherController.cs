@@ -52,7 +52,7 @@ namespace RaviLMS.Controllers
                 //    }
                 //}
                 // Compose email
-                string subjects = "🎉 Registration Received – Awaiting Approval";
+                string subject = "🎉 Registration Received – Awaiting Approval";
 
                 string body = $@"
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
@@ -85,7 +85,7 @@ namespace RaviLMS.Controllers
             {
                 return StatusCode(500, new
                 {
-                    message = "An error occurred",
+                    message = " Error occurred",
                     error = ex.Message,
                     stackTrace = ex.StackTrace // ➕ helps you identify the error line
                 });
