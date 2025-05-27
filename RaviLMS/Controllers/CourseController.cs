@@ -32,7 +32,7 @@ namespace RaviLMS.Controllers
                 {
                     cmd.Parameters.AddWithValue("@CourseName", course.CourseName);
                     cmd.Parameters.AddWithValue("@Description", course.Description);
-                    cmd.Parameters.AddWithValue("@TeacherId", course.TeacherId);
+                  cmd.Parameters.AddWithValue("@TeacherId", course.TeacherId);
 
                     con.Open();
                     cmd.ExecuteNonQuery();
@@ -55,7 +55,7 @@ namespace RaviLMS.Controllers
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                   cmd.Parameters.AddWithValue("@TeacherId", teacherId);
                     con.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -64,7 +64,7 @@ namespace RaviLMS.Controllers
                         courses.Add(new Course
                         {
                             CourseId = Convert.ToInt32(reader["CourseId"]),
-                            CourseName = reader["CourseName"].ToString(),
+                           CourseName = reader["CourseName"].ToString(),
                             TeacherId = Convert.ToInt32(reader["TeacherId"])
                         });
                     }
