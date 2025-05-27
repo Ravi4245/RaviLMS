@@ -72,7 +72,15 @@ namespace RaviLMS.Controllers
 
                     while (reader.Read())
                     {
-                       
+                        assignments.Add(new Assignment
+                        {
+                            AssignmentId = Convert.ToInt32(reader["AssignmentId"]),
+                            Title = reader["Title"].ToString(),
+                            Description = reader["Description"].ToString(),
+                            CourseId = Convert.ToInt32(reader["CourseId"]),
+                            StudentId = Convert.ToInt32(reader["StudentId"]),
+                            //Grade = reader["Grade"] == DBNull.Value ? null : reader["Grade"].ToString()
+                        });
                     }
                 }
             }
