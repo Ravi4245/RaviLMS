@@ -16,7 +16,7 @@ namespace RaviLMS.Models
 
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters")]
-        public string Passwords { get; set; }
+        public string Password { get; set; }
 
         [Required(ErrorMessage = "Status is required")]
         public string Status { get; set; }
