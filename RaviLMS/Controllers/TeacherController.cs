@@ -71,7 +71,7 @@ namespace RaviLMS.Controllers
                     </p>
                     <br/>
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
-                        Best regards,<br/>
+                        Best regards,<br/> 
                         <strong>RHS Team</strong> 🎓
                     </p>";
 
