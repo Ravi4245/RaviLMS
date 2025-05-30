@@ -56,7 +56,7 @@ namespace RaviLMS.Controllers
 
                 string body = $@"
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
-                        Dear <strong>{teacher.FullName}</strong>, 👋
+                        Dear <strong>{teacher.FullName} </strong>, 👋
                     </p>
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
                         We're excited to welcome you to our <strong>Learning Management System (LMS)</strong> community. 📚<br/>

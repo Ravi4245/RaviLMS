@@ -192,6 +192,63 @@ namespace RaviLMS.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpDelete("student/{studentId}")]
+        public IActionResult DeleteStudent(int studentId)
+        {
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM Student WHERE StudentId = @StudentId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@StudentId", studentId);
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 1)
+                    {
+                        return Ok(new { message = "Student deleted successfully" });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Student not found" });
+                    }
+                }
+            }
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("teacher/{teacherId}")]
+        public IActionResult DeleteTeacher(int teacherId)
+        {
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM Teacher WHERE TeacherId = @TeacherId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 1)
+                    {
+                        return Ok(new { message = "Teacher deleted successfully" });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Teacher not found" });
+                    }
+                }
+            }
+        }
+
+
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("counts")]
         public IActionResult GetCounts()
         {
@@ -219,6 +276,8 @@ namespace RaviLMS.Controllers
                     approvedTeachers = (int)cmd.ExecuteScalar();
                 }
             }
+
+
 
             return Ok(new
             {
