@@ -156,5 +156,91 @@ namespace RaviLMS.Controllers
         }
 
 
+        [HttpGet("dashboard/{studentId}")]
+        public IActionResult GetStudentDashboard(int studentId)
+        {
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            var dashboard = new
+            {
+                Courses = new List<Course>(),
+                Assignments = new List<Assignment>(),
+                Announcements = new List<Dictionary<string, object>>() // using Dictionary to handle flexible fields
+            };
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                // Get courses the student is enrolled in
+                using (SqlCommand cmd = new SqlCommand(@"
+            SELECT c.CourseId, c.CourseName, c.Description, c.TeacherId
+            FROM Course c
+            INNER JOIN StudentCourse sc ON c.CourseId = sc.CourseId
+            WHERE sc.StudentId = @StudentId", con))
+                {
+                    cmd.Parameters.AddWithValue("@StudentId", studentId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dashboard.Courses.Add(new Course
+                            {
+                                CourseId = Convert.ToInt32(reader["CourseId"]),
+                                CourseName = reader["CourseName"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                TeacherId = Convert.ToInt32(reader["TeacherId"])
+                            });
+                        }
+                    }
+                }
+
+                // Get assignments for this student
+                    using (SqlCommand cmd = new SqlCommand(@"
+                SELECT AssignmentId, Title, Description, CourseId, StudentId
+                FROM Assignment
+                WHERE StudentId = @StudentId", con))
+                {
+                    cmd.Parameters.AddWithValue("@StudentId", studentId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dashboard.Assignments.Add(new Assignment
+                            {
+                                AssignmentId = Convert.ToInt32(reader["AssignmentId"]),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                CourseId = Convert.ToInt32(reader["CourseId"]),
+                                StudentId = Convert.ToInt32(reader["StudentId"])
+                            });
+                        }
+                    }
+                }
+
+                // Optional: Announcements
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Announcement ORDER BY DatePosted DESC", con))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var announcement = new Dictionary<string, object>
+                            {
+                                ["AnnouncementId"] = reader["AnnouncementId"],
+                                ["Title"] = reader["Title"],
+                                ["Content"] = reader["Content"],
+                                ["DatePosted"] = Convert.ToDateTime(reader["DatePosted"]).ToString("yyyy-MM-dd")
+                            };
+                            dashboard.Announcements.Add(announcement);
+                        }
+                    }
+                }
+            }
+
+            return Ok(dashboard);
+        }
+
+
     }
 }
