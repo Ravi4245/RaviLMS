@@ -247,6 +247,100 @@ namespace RaviLMS.Controllers
         }
 
 
+        // Get all courses (or pending courses if you want filtering)
+        [Authorize(Roles = "Admin")]
+        [HttpGet("courses")]
+        public IActionResult GetCourses()
+        {
+            var courses = new List<Course>();
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT CourseId, CourseName, Description,TeacherId  FROM Course";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        courses.Add(new Course
+                        {
+                            CourseId = reader.GetInt32(0),
+                            CourseName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                            Description = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                            TeacherId = reader.GetInt32(3)
+                        });
+                    }
+                }
+            }
+
+            return Ok(courses);
+        }
+
+        // Delete a course by id
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("course/{courseId}")]
+        public IActionResult DeleteCourse(int courseId)
+        {
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM Course WHERE CourseId = @CourseId";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CourseId", courseId);
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 1)
+                    {
+                        return Ok(new { message = "Course deleted successfully" });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Course not found" });
+                    }
+                }
+            }
+        }
+
+        // Update course details (example for name & description)
+        [Authorize(Roles = "Admin")]
+        [HttpPut("course/{courseId}")]
+        public IActionResult UpdateCourse(int courseId, [FromBody] Course updatedCourse)
+        {
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Course SET CourseName = @CourseName, Description = @Description WHERE CourseId = @CourseId";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CourseName", updatedCourse.CourseName);
+                    cmd.Parameters.AddWithValue("@Description", updatedCourse.Description);
+                    cmd.Parameters.AddWithValue("@CourseId", courseId);
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 1)
+                    {
+                        return Ok(new { message = "Course updated successfully" });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Course not found" });
+                    }
+                }
+            }
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("counts")]
