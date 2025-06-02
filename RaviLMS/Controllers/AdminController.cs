@@ -341,6 +341,66 @@ namespace RaviLMS.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("teachers/approved")]
+        public IActionResult GetApprovedTeachers()
+        {
+            var approvedTeachers = new List<Teacher>();
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT TeacherId, FullName, Email FROM Teacher WHERE Status = 'Approved'";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        approvedTeachers.Add(new Teacher
+                        {
+                            TeacherId = reader.GetInt32(0),
+                            FullName = reader.GetString(1),
+                            Email = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+
+            return Ok(approvedTeachers);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("students/approved")]
+        public IActionResult GetApprovedStudents()
+        {
+            var approvedStudents = new List<Student>();
+            string connectionString = _configuration.GetConnectionString("LMSDB");
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT StudentId, FullName, Email FROM Student WHERE Status = 'Approved'";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        approvedStudents.Add(new Student
+                        {
+                            StudentId = reader.GetInt32(0),
+                            FullName = reader.GetString(1),
+                            Email = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+
+            return Ok(approvedStudents);
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("counts")]
