@@ -280,7 +280,7 @@ namespace RaviLMS.Controllers
             return Ok(courses);
         }
 
-        // Delete a course by id
+        
         [Authorize(Roles = "Admin")]
         [HttpDelete("course/{courseId}")]
         public IActionResult DeleteCourse(int courseId)
@@ -309,7 +309,7 @@ namespace RaviLMS.Controllers
             }
         }
 
-        // Update course details (example for name & description)
+       
         [Authorize(Roles = "Admin")]
         [HttpPut("course/{courseId}")]
         public IActionResult UpdateCourse(int courseId, [FromBody] Course updatedCourse)
