@@ -19,7 +19,7 @@ namespace RaviLMS.Controllers
             _configuration = configuration;
         }
 
-        // Add new course (by teacher)
+        
         [HttpPost("add")]
         public IActionResult AddCourse([FromBody] Course course)
         {
@@ -43,7 +43,7 @@ namespace RaviLMS.Controllers
             return Ok(new { message = "Course Successfully Created" });
         }
 
-        // Get courses by teacher id
+      
         [HttpGet("byTeacher/{teacherId}")]
         public IActionResult GetCoursesByTeacher(int teacherId)
         {
@@ -77,19 +77,19 @@ namespace RaviLMS.Controllers
 
         
 
-[HttpGet("student/{studentId}")]
-    public async Task<ActionResult<IEnumerable<Course>>> GetCoursesByStudent(int studentId)
-    {
-        var courses = new List<Course>();
+      [HttpGet("student/{studentId}")]
+       public async Task<ActionResult<IEnumerable<Course>>> GetCoursesByStudent(int studentId)
+       {
+                var courses = new List<Course>();
 
-        // Apna connection string yahan dal
-        string connectionString = "Data Source=DESKTOP-5S4O1AS;Initial Catalog=RaviLms;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
+     
+                string connectionString = "Data Source=DESKTOP-5S4O1AS;Initial Catalog=RaviLms;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
 
-        string query = @"
-        SELECT c.CourseId, c.CourseName, c.Description, c.TeacherId
-        FROM StudentCourse sc
-        INNER JOIN Course c ON sc.CourseId = c.CourseId
-        WHERE sc.StudentId = @StudentId";
+                string query = @"
+                SELECT c.CourseId, c.CourseName, c.Description, c.TeacherId
+                FROM StudentCourse sc
+                INNER JOIN Course c ON sc.CourseId = c.CourseId
+                WHERE sc.StudentId = @StudentId";
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
