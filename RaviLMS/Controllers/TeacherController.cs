@@ -5,7 +5,7 @@ using RaviLMS.Models;
 using System.Data;
 using System.Collections.Generic;
 using RaviLMS.Repositories;
-//using RaviLMS.Services;
+
 
 namespace RaviLMS.Controllers
 {
@@ -37,26 +37,12 @@ namespace RaviLMS.Controllers
             {
                 await _teacherRepository.RegisterTeacherAsync(teacher);
 
-                //using (SqlConnection con = new SqlConnection(connectionString))
-                //{
-                //    string query = "INSERT INTO Teacher (FullName, Email, Password, Status) VALUES (@FullName, @Email, @Password, 'Pending')";
-
-                //    using (SqlCommand cmd = new SqlCommand(query, con))
-                //    {
-                //        cmd.Parameters.AddWithValue("@FullName", teacher.FullName);
-                //        cmd.Parameters.AddWithValue("@Email", teacher.Email);
-                //        cmd.Parameters.AddWithValue("@Password", teacher.Password);
-
-                //        con.Open();
-                //        cmd.ExecuteNonQuery();
-                //    }
-                //}
-                // Compose email
+               
                 string subject = "🎉 Registration Received – Awaiting Approval";
 
                 string body = $@"
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
-                        Dear <strong>{teacher.FullName}</strong>, 👋
+                        Dear <strong>{teacher.FullName} </strong>, 👋
                     </p>
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
                         We're excited to welcome you to our <strong>Learning Management System (LMS)</strong> community. 📚<br/>
@@ -71,12 +57,12 @@ namespace RaviLMS.Controllers
                     </p>
                     <br/>
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
-                        Best regards,<br/>
+                        Best regards,<br/> 
                         <strong>RHS Team</strong> 🎓
                     </p>";
 
 
-                // Send email (async)
+               
                 await _emailService.SendEmailAsync(teacher.Email, subject, body);
 
                 return Ok(new { message = "Teacher registered successfully. Awaiting admin approval." });
@@ -87,7 +73,7 @@ namespace RaviLMS.Controllers
                 {
                     message = " Error occurred",
                     error = ex.Message,
-                    stackTrace = ex.StackTrace // ➕ helps you identify the error line
+                    stackTrace = ex.StackTrace
                 });
             }
         }
@@ -98,32 +84,6 @@ namespace RaviLMS.Controllers
             var teachers = _teacherRepository.GetApprovedTeachers();
             return Ok(teachers);
 
-
-            //string connectionString = _configuration.GetConnectionString("LMSDB");
-            //List<Teacher> teachers = new List<Teacher>();
-
-            //using (SqlConnection con = new SqlConnection(connectionString))
-            //{
-            //    string query = "SELECT * FROM Teacher WHERE Status = 'Approved'";
-
-            //    using (SqlCommand cmd = new SqlCommand(query, con))
-            //    {
-            //        con.Open();
-            //        SqlDataReader reader = cmd.ExecuteReader();
-
-            //        while (reader.Read())
-            //        {
-            //            teachers.Add(new Teacher
-            //            {
-            //                TeacherId = Convert.ToInt32(reader["TeacherId"]),
-            //                FullName = reader["FullName"].ToString(),
-            //                Email = reader["Email"].ToString()
-            //            });
-            //        }
-            //    }
-            //}
-
-            //return Ok(teachers);
         }
     }
 }

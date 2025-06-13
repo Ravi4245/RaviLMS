@@ -18,7 +18,7 @@ namespace RaviLMS.Controllers
             _configuration = configuration;
         }
 
-        // ✅ Add a new assignment
+       
         [HttpPost("add")]
         public IActionResult AddAssignment([FromBody] Assignment assignment)
         {
@@ -37,7 +37,7 @@ namespace RaviLMS.Controllers
                         cmd.Parameters.AddWithValue("@Description", assignment.Description);
                         cmd.Parameters.AddWithValue("@CourseId", assignment.CourseId);
                         cmd.Parameters.AddWithValue("@StudentId", assignment.StudentId);
-                        //cmd.Parameters.AddWithValue("@Grade", string.IsNullOrEmpty(assignment.Grade) ? DBNull.Value : assignment.Grade);
+                       
 
                         con.Open();
                         cmd.ExecuteNonQuery();
@@ -48,12 +48,12 @@ namespace RaviLMS.Controllers
             }
             catch (Exception ex)
             {
-                // Log exception message here or return it
+                
                 return StatusCode(500, new { error = ex.Message });
             }
         }
 
-        // ✅ Get all assignments submitted by a student
+      
         [HttpGet("byStudent/{studentId}")]
         public IActionResult GetAssignmentsByStudent(int studentId)
         {
@@ -79,7 +79,7 @@ namespace RaviLMS.Controllers
                             Description = reader["Description"].ToString(),
                             CourseId = Convert.ToInt32(reader["CourseId"]),
                             StudentId = Convert.ToInt32(reader["StudentId"]),
-                            //Grade = reader["Grade"] == DBNull.Value ? null : reader["Grade"].ToString()
+                           
                         });
                     }
                 }

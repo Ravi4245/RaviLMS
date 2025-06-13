@@ -16,17 +16,16 @@ namespace RaviLMS
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+           
             builder.Services.AddControllers();
 
             builder.Services.AddDbContext<DbContext>(options =>
-              options.UseSqlServer(builder.Configuration.GetConnectionString("LMSDB")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("LMSDB")));
 
             builder.Services.Configure<Emailsetting>(builder.Configuration.GetSection("EmailSettings"));
 
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+           
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<EmailService>();
@@ -42,7 +41,7 @@ namespace RaviLMS
                 });
             });
 
-            // Configure JWT Authentication
+          
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,7 +61,7 @@ namespace RaviLMS
                 };
             });
 
-            // Add Authorization with roles
+           
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
@@ -77,7 +76,7 @@ namespace RaviLMS
 
 
 
-            // Configure the HTTP request pipeline.
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
