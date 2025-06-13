@@ -11,11 +11,13 @@ using RaviLMS.Models;
 
 namespace RaviLMS.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+
 
         public AdminController(IConfiguration configuration)
         {
