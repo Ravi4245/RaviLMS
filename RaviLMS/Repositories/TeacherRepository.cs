@@ -20,13 +20,20 @@ namespace RaviLMS.Repositories
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO Teacher (FullName, Email, Password, Status) VALUES (@FullName, @Email, @Password, 'Pending')";
+                string query = @"
+            INSERT INTO Teacher 
+                (FullName, Email, Password, Status, DateOfBirth, PhoneNumber, City) 
+            VALUES 
+                (@FullName, @Email, @Password, 'Pending', @DateOfBirth, @PhoneNumber, @City)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@FullName", teacher.FullName);
-                    cmd.Parameters.AddWithValue("@Email", teacher.Email);
-                    cmd.Parameters.AddWithValue("@Password", teacher.Password);
+                    cmd.Parameters.AddWithValue("@FullName", teacher.FullName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", teacher.Email ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Password", teacher.Password ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DateOfBirth", teacher.DateOfBirth ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", teacher.PhoneNumber ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", teacher.City ?? (object)DBNull.Value);
 
                     con.Open();
                     await cmd.ExecuteNonQueryAsync();
@@ -34,6 +41,7 @@ namespace RaviLMS.Repositories
                 }
             }
         }
+
 
         public List<Teacher> GetApprovedTeachers()
         {

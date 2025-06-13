@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
-using RaviLMS.Models; // <-- Your model namespace
+using RaviLMS.Models; 
 using System.Data;
 using System.Data.SqlTypes;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-//using RaviLMS.Services;
+
 
 namespace RaviLMS.Controllers
 {
@@ -38,24 +38,36 @@ namespace RaviLMS.Controllers
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Student (FullName, Email, Password, Status) VALUES (@FullName, @Email, @Password, 'Pending')";
+                    // Updated query to include new columns
+                    string query = @"INSERT INTO Student 
+                            (FullName, Email, Password, Status, DateOfBirth, PhoneNumber, city) 
+                            VALUES 
+                            (@FullName, @Email, @Password, 'Pending', @DateOfBirth, @PhoneNumber, @city)";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@FullName", student.FullName);
-                        cmd.Parameters.AddWithValue("@Email", student.Email);
-                        cmd.Parameters.AddWithValue("@Password", student.Password);
+                        cmd.Parameters.AddWithValue("@FullName", student.FullName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Email", student.Email ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Password", student.Password ?? (object)DBNull.Value);
+
+                        // For nullable DateOfBirth, set DBNull if null
+                        if (student.DateOfBirth.HasValue)
+                            cmd.Parameters.AddWithValue("@DateOfBirth", student.DateOfBirth.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@DateOfBirth", DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@PhoneNumber", student.PhoneNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@City", student.city ?? (object)DBNull.Value);
 
                         con.Open();
                         cmd.ExecuteNonQuery();
                     }
-
                 }
-                // Compose email
-               string subject = "✅ Registration Successful – Awaiting Approval";
 
-               string body = $@"
-               <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
+                string subject = "✅ Registration Successful – Awaiting Approval";
+
+                  string body = $@"
+                    <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
                         Dear <strong>{student.FullName}</strong>, 👋
                     </p>
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
@@ -73,10 +85,8 @@ namespace RaviLMS.Controllers
                     <p style='font-family:Segoe UI, sans-serif; font-size:14px;'>
                         Best regards,<br/>
                         <strong>RHS Team</strong> 💼
-               </p>";
+                    </p>";
 
-
-                // Send email (async)
                 await _emailService.SendEmailAsync(student.Email, subject, body);
 
                 return Ok(new { message = "Student registered successfully. Awaiting admin approval." });
@@ -87,12 +97,14 @@ namespace RaviLMS.Controllers
                 {
                     message = "An error occurred",
                     error = ex.Message,
-                    stackTrace = ex.StackTrace // ➕ helps you identify the error line
+                    stackTrace = ex.StackTrace
                 });
             }
-
-
         }
+
+
+
+        
 
         [HttpGet("approved")]
         public IActionResult GetApprovedStudents()
@@ -132,7 +144,7 @@ namespace RaviLMS.Controllers
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Student";  // No WHERE clause, get all students
+                string query = "SELECT * FROM Student"; 
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -146,7 +158,7 @@ namespace RaviLMS.Controllers
                             StudentId = Convert.ToInt32(reader["StudentId"]),
                             FullName = reader["FullName"].ToString(),
                             Email = reader["Email"].ToString()
-                            // Add other fields if needed
+                            
                         });
                     }
                 }
@@ -165,14 +177,13 @@ namespace RaviLMS.Controllers
             {
                 Courses = new List<Course>(),
                 Assignments = new List<Assignment>(),
-                Announcements = new List<Dictionary<string, object>>() // using Dictionary to handle flexible fields
+                Announcements = new List<Dictionary<string, object>>() 
             };
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
-                // Get courses the student is enrolled in
                 using (SqlCommand cmd = new SqlCommand(@"
             SELECT c.CourseId, c.CourseName, c.Description, c.TeacherId
             FROM Course c
@@ -195,7 +206,7 @@ namespace RaviLMS.Controllers
                     }
                 }
 
-                // Get assignments for this student
+               
                     using (SqlCommand cmd = new SqlCommand(@"
                 SELECT AssignmentId, Title, Description, CourseId, StudentId
                 FROM Assignment
@@ -218,7 +229,7 @@ namespace RaviLMS.Controllers
                     }
                 }
 
-                // Optional: Announcements
+               
                 using (SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM Announcement ORDER BY DatePosted DESC", con))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
